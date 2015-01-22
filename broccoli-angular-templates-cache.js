@@ -68,10 +68,15 @@ BroccoliAngularTemplateCache.prototype.description = 'angular templates cache';
 
 
 BroccoliAngularTemplateCache.prototype.updateCache = function(srcDir, destDir) {
-	var self = this;
+	var self = this,dest;
 
 	var src = path.join(srcDir[0],self.options.srcDir);
-	var dest = path.join(destDir,self.options.destDir+'/'+self.options.fileName);
+
+  if(self.options.absolute){
+    dest = self.options.destDir+'/'+self.options.fileName;
+  }else{
+    dest = path.join(destDir,self.options.destDir+'/'+self.options.fileName);
+  }
 	mkdirp.sync(path.dirname(dest));
 
 	var promise = new rsvp.Promise(function(resolvePromise, rejectPromise) {
@@ -85,6 +90,9 @@ BroccoliAngularTemplateCache.prototype.updateCache = function(srcDir, destDir) {
 			firstFile = null;
 
 			_.each(files,function(file){
+				if(self.options.absolute){
+					file = file.replace(path.dirname(srcDir[0])+'/','');
+				}
 				templates.push({
 					path: file,
 					content: fs.readFileSync(file).toString('utf-8')
@@ -96,7 +104,7 @@ BroccoliAngularTemplateCache.prototype.updateCache = function(srcDir, destDir) {
 				if(err){
 					rejectPromise(err);
 				}else{
-					resolvePromise('Created templates');
+					resolvePromise('templates created');
 				}
 			});
 		});
