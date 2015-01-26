@@ -87,14 +87,15 @@ BroccoliAngularTemplateCache.prototype.updateCache = function(srcDir, destDir) {
 			prepend = self.options.prepend || false,
 			strip = self.options.strip || false,
 			moduleName = self.options.moduleName,
-			firstFile = null;
+			firstFile = null,
+			filePath;
 
-			_.each(files,function(file){
+			_.each(files, function(file){
 				if(self.options.absolute){
 					filePath = file.replace(path.dirname(srcDir[0])+'/','');
 				}
 				templates.push({
-					path: filePath,
+					path: filePath || file,
 					content: fs.readFileSync(file).toString('utf-8')
 				});
 			});
