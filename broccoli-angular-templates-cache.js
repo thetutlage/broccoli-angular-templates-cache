@@ -19,7 +19,7 @@ function escapeTags(content) {
 	return content.replace(/</mg, '&lt;').replace(/>/mg, '&gt;');
 }
 function angularModuleTemplate(moduleName, templateCode) {
-	return 'angular.module("' + moduleName + '").run([\'$templateCache\', function(a) { ' + templateCode + ' }]);';
+	return 'angular.module("' + moduleName + '", []).run([\'$templateCache\', function(a) { ' + templateCode + ' }]);';
 }
 function transformTemplates(templates, strip, prepend, minify) {
 	var cacheOutput = '',
