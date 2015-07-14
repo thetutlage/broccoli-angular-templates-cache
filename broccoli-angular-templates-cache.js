@@ -34,6 +34,7 @@ function transformTemplateEntry(entry, strip, prepend, minify) {
 	content = entry.content,
 	parseError;
 	if (strip) {
+		path = path.replace(process.cwd(), '');
 		path = path.split(strip);
 		path.shift();
 		path = path.join(strip).replace(/\\/g, '/');
