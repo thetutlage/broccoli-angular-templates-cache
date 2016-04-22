@@ -20,7 +20,8 @@ module.exports = angularTemplates('templates', {
   	collapseWhitespace: true
   },
   fileName:'templates.js',
-  moduleName:'angularApp'
+  moduleName:'angularApp',
+  excludeExtensions: []
 });
 
 ```
@@ -53,13 +54,17 @@ Path fragment to remove from template path (from left)
 Type: `Object`
 Default: `false`
 
-Configs to pass on [html-minifier](https://github.com/kangax/html-minifier). 
+Configs to pass on [html-minifier](https://github.com/kangax/html-minifier).
 If ommitted, the HTML is kept untouched
 
 
 #### moduleName
 
 Name of `$templateCache` module
+
+#### excludeExtensions
+
+Array of extensions to ignore in the path
 
 ## LICENSE
 
