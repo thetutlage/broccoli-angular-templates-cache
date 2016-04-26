@@ -38,6 +38,10 @@ function transformTemplateEntry(entry, strip, prepend, minify) {
 		path.shift();
 		path = path.join(strip).replace(/\\/g, '/');
 	}
+	
+	if (process.platform === 'win32') {
+	        path = path.replace(/\\/g, '/');
+	}
 	if (prepend) {
 		path = prepend + path;
 	}
