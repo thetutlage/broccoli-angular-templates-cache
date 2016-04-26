@@ -38,6 +38,10 @@ function transformTemplateEntry(entry, strip, prepend, minify) {
 		path.shift();
 		path = path.join(strip).replace(/\\/g, '/');
 	}
+	
+	if (process.platform === 'win32') {
+	        path = path.replace(/\\/g, '/');
+	}
 	if (prepend) {
 		path = prepend + path;
 	}
@@ -80,7 +84,7 @@ BroccoliAngularTemplateCache.prototype.updateCache = function(srcDir, destDir) {
 	mkdirp.sync(path.dirname(dest));
 
 	var promise = new rsvp.Promise(function(resolvePromise, rejectPromise) {
-		recursive(src, function (err, files) {
+		recursive(src, self.options.excludeExtensions, function (err, files) {
 
 			var templates = [],
 			minify = self.options.minify || false,
