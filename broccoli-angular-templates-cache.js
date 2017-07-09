@@ -1,16 +1,16 @@
 var CachingWriter = require('broccoli-caching-writer'),
-rsvp= require('rsvp'),
-recursive = require('recursive-readdir'),
-_ = require('lodash'),
-htmlMin = require('html-minifier').minify,
-fs = require("fs"),
-mkdirp = require('mkdirp'),
-path = require("path");
+    rsvp= require('rsvp'),
+    recursive = require('recursive-readdir'),
+    _ = require('lodash'),
+    htmlMin = require('html-minifier').minify,
+    fs = require("fs"),
+    mkdirp = require('mkdirp'),
+    path = require("path");
 
 var reQuote = /'/g,
-escapedQuote = '\\\'',
-reNewLine = /\r?\n/g,
-escapedNewLine = '\\n\' +\n \'';
+    escapedQuote = '\\\'',
+    reNewLine = /\r?\n/g,
+    escapedNewLine = '\\n\' +\n \'';
 
 function escapeHtmlContent(content) {
 	return content.replace(reQuote, escapedQuote).replace(reNewLine, escapedNewLine);
@@ -33,10 +33,9 @@ function transformTemplateEntry(entry, strip, prepend, minify) {
 	var path = entry.path,
 	content = entry.content,
 	parseError;
+	path = stripPath(path, process.cwd());
 	if (strip) {
-		path = path.split(strip);
-		path.shift();
-		path = path.join(strip).replace(/\\/g, '/');
+		path = stripPath(path, strip);
 	}
 	if (prepend) {
 		path = prepend + path;
@@ -52,6 +51,12 @@ function transformTemplateEntry(entry, strip, prepend, minify) {
 	}
 	content = escapeHtmlContent(content);
 	return 'a.put(\'' + path + '\', \'' + content + '\');\n\t';
+}
+
+function stripPath(path, strip) {
+	path = path.split(strip);
+	path.shift();
+	return path.join(strip).replace(/\\/g, '/');
 }
 
 var BroccoliAngularTemplateCache = function BroccoliAngularTemplateCache(inTree, options) {
